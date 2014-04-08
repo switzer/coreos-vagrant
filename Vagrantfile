@@ -8,6 +8,8 @@ NUM_INSTANCES = (ENV['NUM_INSTANCES'].to_i > 0 && ENV['NUM_INSTANCES'].to_i) || 
 CLOUD_CONFIG_PATH = "./user-data"
 
 Vagrant.configure("2") do |config|
+  config.vm.network "private_network", ip: "172.17.8.150"
+  config.vm.synced_folder "..", "/home/core/share/code", id: "core", :nfs => true,  :mount_options   => ['nolock,vers=3,udp']
   config.vm.box = "coreos-alpha"
   config.vm.box_url = "http://storage.core-os.net/coreos/amd64-usr/alpha/coreos_production_vagrant.box"
 
