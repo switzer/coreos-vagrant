@@ -8,8 +8,11 @@ NUM_INSTANCES = (ENV['NUM_INSTANCES'].to_i > 0 && ENV['NUM_INSTANCES'].to_i) || 
 CLOUD_CONFIG_PATH = "./user-data"
 
 Vagrant.configure("2") do |config|
+  
+  # Share some local folders inside of Vagrant
   config.vm.network "private_network", ip: "172.17.8.150"
   config.vm.synced_folder "..", "/home/core/share/code", id: "core", :nfs => true,  :mount_options   => ['nolock,vers=3,udp']
+  
   config.vm.box = "coreos-alpha"
   config.vm.box_url = "http://storage.core-os.net/coreos/amd64-usr/alpha/coreos_production_vagrant.box"
 
@@ -19,6 +22,7 @@ Vagrant.configure("2") do |config|
 
   # Fix docker not being able to resolve private registry in VirtualBox
   config.vm.provider :virtualbox do |vb, override|
+    vb.vm.customize ["modifyvm", :id, "--cpuexecutioncap", "75"]
     vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
     vb.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
   end
