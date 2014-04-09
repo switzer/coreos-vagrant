@@ -22,7 +22,7 @@ Vagrant.configure("2") do |config|
 
   # Fix docker not being able to resolve private registry in VirtualBox
   config.vm.provider :virtualbox do |vb, override|
-    vb.vm.customize ["modifyvm", :id, "--cpuexecutioncap", "75"]
+    vb.customize ["modifyvm", :id, "--cpuexecutioncap", "75"]
     vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
     vb.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
   end
